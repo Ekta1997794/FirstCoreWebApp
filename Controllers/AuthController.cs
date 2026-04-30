@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FirstCoreWebApp.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 
 namespace FirstCoreWebApp.Controllers
@@ -22,18 +24,18 @@ namespace FirstCoreWebApp.Controllers
             //Email Validatio
             if(!Regex.IsMatch(reg.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                return BadRequest("Invalid Email Format");
+                return ApiResponse.BadRequest("Invalid Email Format");
             }
 
             //Duplicate Email
             if(_context.Users.Any(u=>u.Email == reg.Email))
             {
-                return StatusCode(409, "Email Already Exists in the system");
+                return ApiResponse.Conflict("Email Already Exists in the system");
             }
 
             if(!(IsValidaPassword(reg.Password)))
             {
-                return BadRequest("Password must be at least 8 characters and include uppercase, lowercase, number, and special character");
+                return ApiResponse.BadRequest("Password must be at least 8 characters and include uppercase, lowercase, number, and special character");
             }
 
             string hashPswd = BCrypt.Net.BCrypt.HashPassword(reg.Password);
@@ -47,11 +49,7 @@ namespace FirstCoreWebApp.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return StatusCode(201, new
-            {
-                message = "User Registered Successfully",
-                userId = user.Id
-            });
+            return ApiResponse.Created( "User Registered Successfully");
 
         }
 
@@ -84,24 +82,19 @@ namespace FirstCoreWebApp.Controllers
         {
             if (!Regex.IsMatch(log.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
-                return BadRequest("Invalid Email Format");
+                return ApiResponse.BadRequest("Invalid Email Format");
             }
             var user = _context.Users.FirstOrDefault(u=>u.Email == log.Email);
             if (user == null)
             {
-                return StatusCode(401, "Invalid Credential");
+                return ApiResponse.Unauthorized("Invalid Credential");
             }
             bool isvalid = BCrypt.Net.BCrypt.Verify(log.Password,user.PasswordHash );
             if(!isvalid) 
             {
-                return StatusCode(401, "Invalid Credential");
+                return ApiResponse.Unauthorized("Invalid Credential");
             }
-            return StatusCode(201,new
-            {
-                message = "Login Successfully",
-                userid = user.Id,
-                email = user.Email,
-            });
+            return ApiResponse.Success("Login Successfully");
         }
     }
 }
