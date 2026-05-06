@@ -19,6 +19,10 @@
             public const string RefreshTokenRevoked = "Refresh token has been revoked";
             public const string RefreshTokenExpired = "Refresh token expired, please login again";
             public const string RolesFound = "All roles are available";
+            public const string NotFound = "Not Found";
+            public const string InvalidRole = "Invalid Role";
+            public const string RoleAssign = "Role Assigned";
+            public const string RoleFetched = "Role Fetched";
 
     }
 }

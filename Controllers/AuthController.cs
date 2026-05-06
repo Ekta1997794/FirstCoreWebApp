@@ -51,22 +51,22 @@ namespace FirstCoreWebApp.Controllers
                 Name = reg.Name,
                 Email = reg.Email,
                 PasswordHash = hashPswd,
-                RoleId = userRole.Id  
+                RoleId = userRole.Id
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Created("",AppMessages.CreateSuccess);
+            return Created("", AppMessages.CreateSuccess);
 
         }
 
         private bool IsValidaPassword(string password)
         {
-            if(password.Length < 8)
+            if (password.Length < 8)
             {
                 return false;
             }
-            if(!Regex.IsMatch(password, @"[A-Z]"))
+            if (!Regex.IsMatch(password, @"[A-Z]"))
             {
                 return false;
             }
@@ -91,13 +91,13 @@ namespace FirstCoreWebApp.Controllers
             {
                 return BadRequest(AppMessages.InvalidEmail);
             }
-            var user = _context.Users.Include(u => u.Role).FirstOrDefault(u=>u.Email == log.Email);
+            var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == log.Email);
             if (user == null)
             {
                 return Unauthorized(AppMessages.InvalidCred);
             }
-            bool isvalid = BCrypt.Net.BCrypt.Verify(log.Password,user.PasswordHash );
-            if(!isvalid) 
+            bool isvalid = BCrypt.Net.BCrypt.Verify(log.Password, user.PasswordHash);
+            if (!isvalid)
             {
                 return Unauthorized(AppMessages.InvalidCred);
             }
@@ -217,7 +217,7 @@ namespace FirstCoreWebApp.Controllers
             });
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("Admin")]
         public IActionResult AdminOnly()
         {
@@ -262,7 +262,7 @@ namespace FirstCoreWebApp.Controllers
             });
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("roles")]
         public IActionResult GetAllRoles()
         {
@@ -275,6 +275,48 @@ namespace FirstCoreWebApp.Controllers
             {
                 message = AppMessages.RolesFound,
                 data = roles
+            });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("users/{userid}/role")]
+        public async Task<IActionResult> Assignrole(int userid,string roleName)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == userid);
+            if(user == null)
+            {
+                return BadRequest(AppMessages.NotFound);
+            }
+            var role = _context.Roles.FirstOrDefault(r=>r.RoleName == roleName);
+            if(role == null)
+            {
+                return BadRequest(AppMessages.InvalidRole);
+            }
+            user.RoleId = role.Id;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+            return Ok(new
+            {
+                userid = user.RoleId,
+                role = role.RoleName,
+                message = AppMessages.RoleAssign
+            });
+        }
+
+        [Authorize(Roles = "Instructor")]
+        [HttpGet("users/{userid}/role")]
+        public IActionResult GetUserRole(int userid)
+        {
+            var user = _context.Users.Include(u=> u.Role).FirstOrDefault(u => u.Id == userid);
+            if(user == null)
+            {
+                return BadRequest(AppMessages.NotFound);
+            }
+            return Ok(new
+            {
+                userid = user.Id,
+                roleName = user.Role.RoleName,
+                Message = AppMessages.RoleFetched
             });
         }
     }
