@@ -23,6 +23,10 @@
             public const string InvalidRole = "Invalid Role";
             public const string RoleAssign = "Role Assigned";
             public const string RoleFetched = "Role Fetched";
-
+            public const string InvalidStatus = "Invalid Status Value";
+            public const string CourseUpdate = "Course Update Successfully";
+            public const string PrerequisiteCourseIds = "Course ID {0} does not exist";
+        
+      
     }
 }

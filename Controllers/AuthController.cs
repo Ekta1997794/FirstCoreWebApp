@@ -10,6 +10,7 @@ using System.Reflection.Metadata;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace FirstCoreWebApp.Controllers
 {
@@ -23,6 +24,7 @@ namespace FirstCoreWebApp.Controllers
         {
             _context = context;
         }
+
 
         [HttpPost("registers")]
         public async Task<IActionResult> Registers(Register reg)
@@ -113,7 +115,7 @@ namespace FirstCoreWebApp.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(2),
+                expires: DateTime.Now.AddMinutes(20),
                 signingCredentials: creds
             );
 
@@ -280,15 +282,15 @@ namespace FirstCoreWebApp.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("users/{userid}/role")]
-        public async Task<IActionResult> Assignrole(int userid,string roleName)
+        public async Task<IActionResult> Assignrole(int userid, string roleName)
         {
             var user = _context.Users.FirstOrDefault(u => u.Id == userid);
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest(AppMessages.NotFound);
             }
-            var role = _context.Roles.FirstOrDefault(r=>r.RoleName == roleName);
-            if(role == null)
+            var role = _context.Roles.FirstOrDefault(r => r.RoleName == roleName);
+            if (role == null)
             {
                 return BadRequest(AppMessages.InvalidRole);
             }
@@ -307,8 +309,8 @@ namespace FirstCoreWebApp.Controllers
         [HttpGet("users/{userid}/role")]
         public IActionResult GetUserRole(int userid)
         {
-            var user = _context.Users.Include(u=> u.Role).FirstOrDefault(u => u.Id == userid);
-            if(user == null)
+            var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Id == userid);
+            if (user == null)
             {
                 return BadRequest(AppMessages.NotFound);
             }
@@ -319,5 +321,9 @@ namespace FirstCoreWebApp.Controllers
                 Message = AppMessages.RoleFetched
             });
         }
+
+
+       
+       
     }
 }
