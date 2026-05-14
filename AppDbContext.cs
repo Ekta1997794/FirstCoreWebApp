@@ -1,7 +1,6 @@
 ﻿using FirstCoreWebApp.Model;
 using FirstCoreWebApp.Model.Course;
-using FirstCoreWebApp.Model.Lesson;
-using FirstCoreWebApp.Model.Material;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -18,6 +17,13 @@ namespace FirstCoreWebApp
 
 
         public DbSet<CoursePrerequisite> CoursePrerequisites { get; set; }
+
+
+        public DbSet<LessonMaterial> LessonMaterials { get; set; }
+
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<CourseMaterial> CourseMaterials { get; set; }
+       
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,7 +47,17 @@ namespace FirstCoreWebApp
                 .HasForeignKey(cp => cp.PrerequisiteCourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            
+            modelBuilder.Entity<LessonMaterial>()
+               .HasOne(lm => lm.Lesson)
+               .WithMany(l => l.LessonMaterials)
+               .HasForeignKey(lm => lm.LessonId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+                        modelBuilder.Entity<LessonMaterial>()
+                    .HasOne(lm => lm.CourseMaterial)
+                    .WithMany()
+                    .HasForeignKey(lm => lm.CourseMaterialId)
+                    .OnDelete(DeleteBehavior.Restrict);
         }
 
         
