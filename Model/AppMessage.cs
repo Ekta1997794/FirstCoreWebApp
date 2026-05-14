@@ -26,7 +26,7 @@
             public const string InvalidStatus = "Invalid Status Value";
             public const string CourseUpdate = "Course Update Successfully";
             public const string PrerequisiteCourseIds = "Course ID {0} does not exist";
+        public const string CoureseDeleted = "Course deleted successfully";
         
-      
     }
 }
