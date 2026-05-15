@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstCoreWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260504095310_FixRefreshTokenNull")]
-    partial class FixRefreshTokenNull
+    [Migration("20260508062605_AddCoursePrerequisiteTable")]
+    partial class AddCoursePrerequisiteTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,45 @@ namespace FirstCoreWebApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("FirstCoreWebApp.Model.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("FirstCoreWebApp.Model.CoursePrerequisite", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrerequisiteCourseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "PrerequisiteCourseId");
+
+                    b.HasIndex("PrerequisiteCourseId");
+
+                    b.ToTable("CoursePrerequisites");
+                });
 
             modelBuilder.Entity("FirstCoreWebApp.Model.Role", b =>
                 {
@@ -80,6 +119,25 @@ namespace FirstCoreWebApp.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FirstCoreWebApp.Model.CoursePrerequisite", b =>
+                {
+                    b.HasOne("FirstCoreWebApp.Model.Course", "Course")
+                        .WithMany("Prerequisites")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FirstCoreWebApp.Model.Course", "PrerequisiteCourse")
+                        .WithMany()
+                        .HasForeignKey("PrerequisiteCourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("PrerequisiteCourse");
+                });
+
             modelBuilder.Entity("FirstCoreWebApp.User", b =>
                 {
                     b.HasOne("FirstCoreWebApp.Model.Role", "Role")
@@ -89,6 +147,11 @@ namespace FirstCoreWebApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("FirstCoreWebApp.Model.Course", b =>
+                {
+                    b.Navigation("Prerequisites");
                 });
 #pragma warning restore 612, 618
         }

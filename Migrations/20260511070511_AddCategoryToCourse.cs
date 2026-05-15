@@ -4,23 +4,22 @@
 
 namespace FirstCoreWebApp.Migrations
 {
-    public partial class AddRole : Migration
+    public partial class AddCategoryToCourse : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Role",
-                table: "Users",
+                name: "Category",
+                table: "Courses",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Role",
-                table: "Users");
+                name: "Category",
+                table: "Courses");
         }
     }
 }

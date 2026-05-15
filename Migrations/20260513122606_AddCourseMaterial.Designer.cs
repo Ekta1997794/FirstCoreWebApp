@@ -4,6 +4,7 @@ using FirstCoreWebApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstCoreWebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260513122606_AddCourseMaterial")]
+    partial class AddCourseMaterial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,32 +69,6 @@ namespace FirstCoreWebApp.Migrations
                     b.ToTable("CoursePrerequisites");
                 });
 
-            modelBuilder.Entity("FirstCoreWebApp.Model.Lesson.Lesson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Lessons");
-                });
-
             modelBuilder.Entity("FirstCoreWebApp.Model.Material.CourseMaterial", b =>
                 {
                     b.Property<int>("Id")
@@ -121,29 +97,6 @@ namespace FirstCoreWebApp.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("CourseMaterials");
-                });
-
-            modelBuilder.Entity("FirstCoreWebApp.Model.Material.LessonMaterial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CourseMaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseMaterialId");
-
-                    b.HasIndex("LessonId");
-
-                    b.ToTable("LessonMaterials");
                 });
 
             modelBuilder.Entity("FirstCoreWebApp.Model.Module", b =>
@@ -243,45 +196,15 @@ namespace FirstCoreWebApp.Migrations
                     b.Navigation("PrerequisiteCourse");
                 });
 
-            modelBuilder.Entity("FirstCoreWebApp.Model.Lesson.Lesson", b =>
-                {
-                    b.HasOne("FirstCoreWebApp.Model.Course.Course", "Course")
-                        .WithMany("Lessons")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
             modelBuilder.Entity("FirstCoreWebApp.Model.Material.CourseMaterial", b =>
                 {
                     b.HasOne("FirstCoreWebApp.Model.Course.Course", "Course")
-                        .WithMany("CourseMaterials")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("FirstCoreWebApp.Model.Material.LessonMaterial", b =>
-                {
-                    b.HasOne("FirstCoreWebApp.Model.Material.CourseMaterial", "CourseMaterial")
-                        .WithMany()
-                        .HasForeignKey("CourseMaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("FirstCoreWebApp.Model.Lesson.Lesson", "Lesson")
-                        .WithMany("LessonMaterials")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("CourseMaterial");
-
-                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("FirstCoreWebApp.Model.Module", b =>
@@ -308,18 +231,9 @@ namespace FirstCoreWebApp.Migrations
 
             modelBuilder.Entity("FirstCoreWebApp.Model.Course.Course", b =>
                 {
-                    b.Navigation("CourseMaterials");
-
-                    b.Navigation("Lessons");
-
                     b.Navigation("Modules");
 
                     b.Navigation("Prerequisites");
-                });
-
-            modelBuilder.Entity("FirstCoreWebApp.Model.Lesson.Lesson", b =>
-                {
-                    b.Navigation("LessonMaterials");
                 });
 #pragma warning restore 612, 618
         }

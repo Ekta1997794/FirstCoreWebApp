@@ -4,29 +4,29 @@
 
 namespace FirstCoreWebApp.Migrations
 {
-    public partial class FixRefreshTokenNull : Migration
+    public partial class ChangeInstructorIdType : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "RefreshToken",
-                table: "Users",
-                type: "nvarchar(max)",
+            migrationBuilder.AlterColumn<int>(
+                name: "InstructorId",
+                table: "Courses",
+                type: "int",
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "RefreshToken",
-                table: "Users",
+                name: "InstructorId",
+                table: "Courses",
                 type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
                 oldNullable: true);
         }
     }

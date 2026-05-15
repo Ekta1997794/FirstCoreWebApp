@@ -1,0 +1,51 @@
+                          Interview Preparation Of Angular
+
+1. Latest Version Of Angular is 12.0.0. It is developed by Google.
+2. It is front end development framework, develop for single page application.
+3. Features of Angular 12 are:- Bug Fixes, Speed and other improvements.
+4. CLI:- (Command Line Interface)-> It gives us some commands which are used for set up 
+   angular,Angular project going to run, build is ready inside which components,
+   modules, routes can be installed.
+   Basically it is used for developing project.
+
+5. ng version -> To Know versio of ng
+   npm install - g@agnular/cli@10.0.0 (For specific version)
+
+6. If package.json is deleted then what happend
+Ans:- Then ur project is not working because it contain full detail about ur project.
+
+7. Diff btw package.json and package.lock.json.
+Ans:- Package.json contain which cmnd and versions have to include and dependencies and
+      dev dependencies it contain.
+      Package.lock.json contain internal dependencies of package too, that's why its length 
+      is more as compare to package.json.
+8. If Package.lock.json is deleted than project is working or not 
+Ans:- Project is working because when u execute npm install then Package.lock.json is
+      automatically generated according to that package.
+9. What is interpolation.
+Ans:- It is used to display the dynamic data to Html template.
+10. What we cannot do with interpolation.
+Ans:- Incremet/decrement operator cannot work, New Keyword , Assigment operator , type of()
+      cannot work.
+11. Command to create new component
+=> ng generate component [YourComponentName]
+12. Create Module
+=> ng generate module [YourModuleName]
+13. Create component inside module
+=> ng generate component [modulename]/[ComponentNameYouWantToCreate]
+14. Create class
+=> ng generate class [className]
+15. create interface
+=> ng generate interface [interfacename]
+16. To Build PRoject
+=> ng build
+
+17. What is component.
+Ans:- It is a building block used for creating specific functionality, creted inside app folder. 
+      It consist of four files 
+1. component.html => It consist of static data.
+2. component.css => It consist of style part.
+3. component.ts => It consist of dynamic data, logical part, api connection , etc.
+4. component.spec.ts => It is used for testing purpose.
+
+       

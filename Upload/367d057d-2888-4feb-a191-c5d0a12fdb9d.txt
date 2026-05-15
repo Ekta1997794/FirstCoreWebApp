@@ -1,0 +1,229 @@
+1.What is MVC?
+=>It is software design pattern used to organize code in the software application.
+Model:- It performs:-
+Business logics, Defining properties, Validations.
+
+View:- It performs:-
+Display data to the users like html, forms , controls.
+
+Controller:- It performs:-
+Co-ordinate between model and view.
+Handles the buttons click
+processing after submission
+decide which view show in the browser.
+
+2.Explain MVC architecture with request flow.
+=> 
+1.User send request
+=>by click links, form submission or enter url.
+
+2.Request Received by contoller.
+=> It perform validations and decide what action to perform.
+
+3.Controller call model=>
+=> Fetch data, update data and apply business logics.
+
+4.Model process data
+=> It communicate with database , execute business logics, return result to the controller.
+
+5.Controller select view
+=> It chooses appropriate model to pass data to it.
+
+6.View rendered response
+=>receive data from controller, format and display data in (html/ui).
+
+7.Response sent to the user.
+=>Response sent back to the browser and user seems the final result.
+
+3.Roll of controller.
+=> It handles the request , when user submits the forms.
+ Interact with model, perform c# logics , database communications, done some calculations, etc.
+ After getting data or result , decide which view is appropriate to show and pass the data to it
+and sends back the response to the browsers.
+
+4.Diff btw View data, view bag, temp data.
+=> View Data=> It stores the data in form of key value pair. Send data from controller to view. Need type casting.
+Value lost when redirect to another request, hold for the current request only.
+View Bag => It stores the data in form of key value pair. Send data from controller to view.No need of type casting.
+Value lost when redirect to another request, hold for the current request only.
+Temp Data =>  It stores the data in form of key value pair. Send data from controller to view.Need of type casting.
+Value doesn't lost when redirect to another request. Stored value in Session that' why its value can be accessible in the
+entire application.
+
+5.Strongly type view?
+=> A view which is bound to a specific model class, which allow us to access the model properties using compile time checking,
+   type safety.
+
+6.What is model binding?
+=> Model binding takes data from an http request like(json, form fields, query string, etc) and convert it into c# objects
+and parameters that controller action methods can use.
+Ex:- public IActionResult Create(Student stud)
+{
+ return View(stud);
+}
+
+7.How do u pass data from controller to view.
+=> Through three ways we can pass data in mvc:-
+1.ViewData=> ViewData["Message"]="Welcome";
+2.ViewBag => ViewBag.Message = "Welcome";
+3.TempData=> TempData["Message"] = "Welcome";
+
+8.How do u handle the null refrence exception.
+=> This exception occures when we try to access the object that is null.
+We can handle it by using some ways:-
+1.Check null 
+2.Model Validations
+3.Use conditional operators
+
+
+9.How u validate model data in mvc.
+=>We can validate by following ways:-
+1.Data Annotations:- It define on the model properties to apply validation rules like Range,Required,EmmailAddress,etc.
+Ex:-
+public class Student
+{
+ [Required(ErrorMessage="Name is required")]
+ public string Name {get;set;}
+ 
+ [Range(10,30)]
+ public int Age {get;set;}
+}
+
+2.Model State:- It checks that all the model porperties are according to their validation rules or not.
+Ex:- [httppost]
+     public IActionResult Create(Student stud)
+     {
+       if(ModelState.IsValid)
+       {
+            return View(stud);
+       }
+     }
+3.Using client side and server side validations.
+
+10.diff btw html.partial and html.RenderPartial
+=>           Html.Partial                               Html.RenderPartial
+Use to Render Partial View                    Use to Render partial view
+Return Html  as string                       Write outpurt directly on response
+Store output in a varible                     Outpurt cannot store.
+More access memory                           Less Access Memory.
+Work slower.                                Work Faster.
+@Html.Partial("_StudentData");              @{Html.RenderPartial("_StudentData")};
+
+11.Layout Page.
+=>It is the master page that contain the common structure of the website such as Header, Footer, Menu, scripts etc.
+Purpose of Layout Page:-
+Avoid Code duplication
+Easy to update and maintain
+Common UI elements
+
+Helps to main consistent look and feel across multiple views in the web site.
+
+12.How to handle exception globally.
+1.Using Exception handling middleware
+=> Create separte page for handling error and redirect into that page thorugh program.cs file.
+2.Using attribute [HandleError]
+=> defining it into the controller.
+
+13.How to upload file in mvc.
+=> <form asp-action="Upload" method="Post" enctype="multipart/form-data">
+       <input type="file" name="file" />
+       <button type="submit">Upload</button>
+   </form>
+
+14.Explain filters.
+=>1.Authorization Filter:- 
+1.Execute first
+2.Used for security and accesss controls.
+3.Run before execution of Action method.
+
+2.Action Filter
+1.Run before and after execution action methods
+2.Used to logging, perfomance monitoring, validations, etc.
+
+3.Result Filter
+1.Run before and after exection result action
+2.To modify view data and response
+
+4.Exception Filter
+1.Run when unhandled exception Error occur.
+2.Used to handle error globally and logging.
+
+15.What is OnActionExecuting.
+=> It is ActionFilter which run just before execution of Controller Action Method. Used to perform some pre logics.
+Like - Authoriztions, Authentication, checking some conditions, Input validations etc.
+
+13.diff btw Entity Framework and ADO.Net
+=>ADO.Net => 
+1.Data handling manually.
+2.Wrtie SQL queries
+3.Give better performance and faster.
+4.Developers write the more code.
+
+Entity Framework
+1.Data handling automatically.
+2.Developers wrtie Less code.
+3.Work slower than ADO.NET.
+4.Write LINQ queries to interact with database.
+
+14.What is Global.ascx.
+=>It is the application level file used in tha asp.net mvc application to handled the global events like
+  start application, error handling, route configurations, etc.
+
+15.How to handle session timeout in mvc.
+=> It happens when user is inactive for a specific period of time and the session becomes expire.
+Handle it by some ways:
+1.Set Session Time out:-
+=>In web config file => <SessionState TimeOut="20" />
+
+2.Check session at controller.
+3.Show sessin time out message.
+
+16.Start Up file in mvc.
+=>It is the file where application configured and initialized when it starts.
+It defines-
+1.Service configurations.
+2.Session Set up.
+3.Authentication, Routing
+4.Middelware pipeline.
+
+
+17.What is Razor?
+=> It is a view used in ASP.NET mvc or asp.net core used to generate html dynamically.
+It works in following ways:-
+1.When requent comes on mvc or core app.
+2.Razor compiles the request by-
+static html
+dynamic values from model , view bag, view data.
+Done some C# logics, loops, conditions, etc.
+3.Finally return dynamic html content in the browser.
+
+Syntax:- @{
+             name="Ekta"
+          }
+<p>@name</p>
+<h3>@DateTime.Now</h3>
+
+18.What is Caching?
+=> It is technique used in the software application to store frequently used data temporarily , so it can be reterive fastly 
+instead of recomputing or fatching from the source like API and database.
+
+Why caching is needed -
+
+1. Without it => response slower, for every reuqest hit the database and api , server loads becomes high, etc.
+2. With It => Response faster, Reduce calling database and api, improve perfomance and scalability.
+
+Wokring process of Cache:-
+
+1. Whenever user request to the server.
+2. Firstly check in cache if present then send response from cache if not then hit database or api's.
+3. Store result in cache for future requirements.
+
+
+19.What are Partial Views?
+=> These are the reusable views which contain the portion of UI like header, footer, menu and product card , etc.
+   and can be rendered inside another views.
+Why used:-
+Reuse common layouts like header, footer, etc.
+Improves readability of views.
+Easy maintenance.
+

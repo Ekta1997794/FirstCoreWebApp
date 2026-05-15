@@ -239,7 +239,10 @@ namespace FirstCoreWebApp.Controllers
             };
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
-            return StatusCode(201, course);
+            return Ok(new 
+            {
+                Message = AppMessages.CreateSuccess
+            });
         }
 
 

@@ -1,6 +1,7 @@
-﻿using FirstCoreWebApp.Model.Material;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using FirstCoreWebApp.Model.Material;
 using FirstCoreWebApp.Model.Lesson;
+
 namespace FirstCoreWebApp.Model.Course
 {
     public enum CourseStatus
@@ -26,11 +27,8 @@ namespace FirstCoreWebApp.Model.Course
         public string? Category { get; set; }
         public int? InstructorId { get; set; }
         public ICollection<Module>? Modules { get; set; }
-
-        // NEW
         public ICollection<FirstCoreWebApp.Model.Lesson.Lesson>? Lessons { get; set; }
 
-        // NEW
         public ICollection<CourseMaterial>? CourseMaterials { get; set; }
     }
 }

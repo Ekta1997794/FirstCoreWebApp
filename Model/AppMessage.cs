@@ -33,6 +33,12 @@
         public const string PublishSuccess =    "Course published successfully";
         public const string CheckModuleContainCourseId = "Course must contain at least one module before publishing";
         public const string CoureseDeleted = "Course deleted successfully";
-        
+
+        public const string CheckFormat = "Unsupported file format";
+        public const string CheckFileSize = "File Size exceeds limit";
+        public const string MaterialUpdated = "Material updated successfully";
+        public const string MaterialDeleted = "Material Deleted successfully";
+        public const string CourseMaterialIds = "Course Material ID {0} does not exist";
+
     }
 }
